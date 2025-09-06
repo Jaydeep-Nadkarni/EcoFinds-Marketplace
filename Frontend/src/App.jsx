@@ -11,6 +11,7 @@ import MyListings from "./pages/MyListings";
 import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import PreviousPurchases from "./pages/PreviousPurchases";
+import Test from "./pages/Test";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -36,6 +37,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/purchases" element={<PreviousPurchases />} />
+            <Route path="/test" element={<Test/>} />
           </Routes>
         </main>
         <Footer />
