@@ -62,7 +62,7 @@ const SearchBar = ({ value, onChange, onSearch }) => {
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="appearance-none w-full pl-3 pr-10 py-2.5 border border-gray-300 rounded-l-lg md:rounded-r-none border-r-0 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 bg-white text-gray-700 cursor-pointer"
+              className="appearance-none w-full pl-3 pr-10 py-2.5 border border-gray-300 rounded-l-lg md:rounded-r-none border-r-0 focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white text-gray-700 cursor-pointer"
             >
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -85,14 +85,14 @@ const SearchBar = ({ value, onChange, onSearch }) => {
               placeholder="Find pre-loved items near you..."
               value={value}
               onChange={onChange}
-              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 md:rounded-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              className="block w-full pl-10 pr-3 py-2.5 border border-gray-300 md:rounded-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
           </div>
 
           {/* Search button */}
           <button
             type="submit"
-            className="px-4 py-2.5 bg-amber-600 text-white font-medium rounded-r-lg hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors"
+            className="px-4 py-2.5 bg-green-600 text-white font-medium rounded-r-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
           >
             Search
           </button>
@@ -101,12 +101,12 @@ const SearchBar = ({ value, onChange, onSearch }) => {
           <button
             type="button"
             onClick={() => setExpanded(!expanded)}
-            className={`px-3 py-2.5 ml-2 border border-gray-300 rounded-lg flex items-center ${hasActiveFilters ? 'bg-amber-100 text-amber-700 border-amber-300' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
+            className={`px-3 py-2.5 ml-2 border border-gray-300 rounded-lg flex items-center ${hasActiveFilters ? 'bg-green-100 text-green-700 border-green-300' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
           >
             <FunnelIcon className="h-5 w-5 mr-1" />
             Filters
             {hasActiveFilters && (
-              <span className="ml-1.5 bg-amber-600 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="ml-1.5 bg-green-600 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center">
                 !
               </span>
             )}
@@ -121,7 +121,7 @@ const SearchBar = ({ value, onChange, onSearch }) => {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="text-sm text-amber-600 hover:text-amber-700 font-medium"
+                className="text-sm text-green-600 hover:text-green-700 font-medium"
               >
                 Clear all
               </button>
@@ -136,7 +136,7 @@ const SearchBar = ({ value, onChange, onSearch }) => {
                 <select
                   value={condition}
                   onChange={(e) => setCondition(e.target.value)}
-                  className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                  className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 >
                   {conditions.map((cond) => (
                     <option key={cond.id} value={cond.id}>{cond.name}</option>
@@ -155,14 +155,14 @@ const SearchBar = ({ value, onChange, onSearch }) => {
                     placeholder="Min"
                     value={priceRange.min}
                     onChange={(e) => setPriceRange({...priceRange, min: e.target.value})}
-                    className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                    className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   />
                   <input
                     type="number"
                     placeholder="Max"
                     value={priceRange.max}
                     onChange={(e) => setPriceRange({...priceRange, max: e.target.value})}
-                    className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+                    className="block w-full pl-3 pr-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
               </div>
@@ -172,7 +172,7 @@ const SearchBar = ({ value, onChange, onSearch }) => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Sort By
                 </label>
-                <select className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
+                <select className="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500">
                   <option value="newest">Newest First</option>
                   <option value="price-low">Price: Low to High</option>
                   <option value="price-high">Price: High to Low</option>
@@ -184,7 +184,7 @@ const SearchBar = ({ value, onChange, onSearch }) => {
             <div className="mt-4 flex justify-end">
               <button
                 type="submit"
-                className="px-4 py-2 bg-amber-600 text-white font-medium rounded-md hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors"
+                className="px-4 py-2 bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
                 onClick={() => setExpanded(false)}
               >
                 Apply Filters
@@ -198,11 +198,11 @@ const SearchBar = ({ value, onChange, onSearch }) => {
       {hasActiveFilters && (
         <div className="mt-3 flex flex-wrap gap-2">
           {category !== "all" && (
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
               Category: {categories.find(c => c.id === category)?.name}
               <button
                 onClick={() => setCategory("all")}
-                className="ml-1.5 rounded-full flex-shrink-0 flex items-center justify-center text-amber-600 hover:bg-amber-200 hover:text-amber-900"
+                className="ml-1.5 rounded-full flex-shrink-0 flex items-center justify-center text-green-600 hover:bg-green-200 hover:text-green-900"
               >
                 <XMarkIcon className="h-3.5 w-3.5" />
               </button>

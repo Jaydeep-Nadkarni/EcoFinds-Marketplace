@@ -60,7 +60,7 @@ const UserAvatar = ({
       {/* Avatar Button */}
       <button
         onClick={toggleDropdown}
-        className="flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 text-amber-800 relative border-2 border-white hover:border-amber-200 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+        className="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 text-green-800 relative border-2 border-white hover:border-green-200 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
@@ -98,7 +98,7 @@ const UserAvatar = ({
           <div className="px-4 py-3 border-b border-gray-100">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center text-amber-800 font-semibold text-lg">
+                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-800 font-semibold text-lg">
                   {user.avatar ? (
                     <img 
                       src={user.avatar} 
@@ -116,7 +116,7 @@ const UserAvatar = ({
                 
                 {user.seller && (
                   <div className="flex items-center mt-1">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       <ShieldCheckIcon className="h-3 w-3 mr-1" />
                       Seller
                     </span>
@@ -214,7 +214,7 @@ const UserAvatar = ({
             <div className="py-1 border-t border-gray-100">
               <Link
                 to="/sell"
-                className="flex items-center px-4 py-2 text-sm text-amber-700 hover:bg-amber-50"
+                className="flex items-center px-4 py-2 text-sm text-green-700 hover:bg-green-50"
                 onClick={() => setIsOpen(false)}
               >
                 <PlusCircleIcon className="h-5 w-5 mr-3" />

@@ -56,7 +56,7 @@ export default function Dashboard() {
   const renderProfileTab = () => (
     <div className="space-y-6">
       <div className="flex items-center space-x-4">
-        <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center text-amber-800 text-2xl font-bold">
+        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-800 text-2xl font-bold">
           {userData.avatar ? (
             <img src={userData.avatar} alt="Profile" className="w-full h-full rounded-full object-cover" />
           ) : (
@@ -66,7 +66,7 @@ export default function Dashboard() {
         <div>
           <h3 className="text-lg font-semibold">{userData.username}</h3>
           <p className="text-gray-600">Member since March 2023</p>
-          <button className="text-amber-600 text-sm font-medium mt-1">
+          <button className="text-green-600 text-sm font-medium mt-1">
             Change avatar
           </button>
         </div>
@@ -80,7 +80,7 @@ export default function Dashboard() {
             name="username"
             value={userData.username}
             onChange={handleInputChange}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500"
           />
         </div>
         
@@ -93,7 +93,7 @@ export default function Dashboard() {
               name="email"
               value={userData.email}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 rounded-lg px-10 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              className="w-full border border-gray-300 rounded-lg px-10 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
           </div>
         </div>
@@ -107,7 +107,7 @@ export default function Dashboard() {
               name="phone"
               value={userData.phone}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 rounded-lg px-10 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              className="w-full border border-gray-300 rounded-lg px-10 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500"
             />
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function Dashboard() {
               name="location"
               value={userData.location}
               onChange={handleInputChange}
-              className="w-full border border-gray-300 rounded-lg px-10 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              className="w-full border border-gray-300 rounded-lg px-10 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500"
               placeholder="Your city or area"
             />
           </div>
@@ -134,14 +134,14 @@ export default function Dashboard() {
             value={userData.bio}
             onChange={handleInputChange}
             rows={3}
-            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 focus:border-green-500"
             placeholder="Tell others about yourself and your interests..."
           />
         </div>
         
         <button
           type="submit"
-          className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 rounded-lg transition-colors"
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition-colors"
         >
           Save Changes
         </button>
@@ -152,9 +152,9 @@ export default function Dashboard() {
   const renderStatsTab = () => (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-amber-50 p-4 rounded-lg border border-amber-100">
+        <div className="bg-green-50 p-4 rounded-lg border border-green-100">
           <div className="flex items-center">
-            <ShoppingBagIcon className="h-8 w-8 text-amber-600" />
+            <ShoppingBagIcon className="h-8 w-8 text-green-600" />
             <div className="ml-3">
               <p className="text-sm text-gray-600">Items Sold</p>
               <p className="text-xl font-bold text-gray-900">{stats.itemsSold}</p>
@@ -197,7 +197,7 @@ export default function Dashboard() {
         <h3 className="font-medium text-gray-900 mb-3">Sustainability Impact</h3>
         <div className="bg-gray-50 p-4 rounded-lg">
           <div className="flex items-center">
-            <ArrowPathIcon className="h-10 w-10 text-amber-600 mr-3" />
+            <ArrowPathIcon className="h-10 w-10 text-green-600 mr-3" />
             <div>
               <p className="font-semibold">By using ReCircle, you've helped:</p>
               <ul className="list-disc list-inside text-sm text-gray-600 mt-1">
@@ -222,12 +222,12 @@ export default function Dashboard() {
               <div className={`rounded-full p-2 mr-3 ${
                 activity.type === "sale" ? "bg-green-100" :
                 activity.type === "purchase" ? "bg-blue-100" :
-                activity.type === "like" ? "bg-rose-100" : "bg-amber-100"
+                activity.type === "like" ? "bg-rose-100" : "bg-green-100"
               }`}>
                 {activity.type === "sale" && <ShoppingBagIcon className="h-5 w-5 text-green-600" />}
                 {activity.type === "purchase" && <CreditCardIcon className="h-5 w-5 text-blue-600" />}
                 {activity.type === "like" && <HeartIcon className="h-5 w-5 text-rose-600" />}
-                {activity.type === "review" && <ShieldCheckIcon className="h-5 w-5 text-amber-600" />}
+                {activity.type === "review" && <ShieldCheckIcon className="h-5 w-5 text-green-600" />}
               </div>
               <div className="flex-1">
                 <p className="text-sm text-gray-800">
@@ -248,7 +248,7 @@ export default function Dashboard() {
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6">
       <div className="flex items-center mb-6">
-        <UserIcon className="w-8 h-8 text-amber-600 mr-2" />
+        <UserIcon className="w-8 h-8 text-green-600 mr-2" />
         <h1 className="text-2xl font-bold text-gray-800">My Dashboard</h1>
       </div>
       
@@ -261,7 +261,7 @@ export default function Dashboard() {
                 onClick={() => setActiveTab("profile")}
                 className={`w-full flex items-center px-3 py-2 rounded-md text-left transition-colors ${
                   activeTab === "profile" 
-                    ? "bg-amber-100 text-amber-700 font-medium" 
+                    ? "bg-green-100 text-green-700 font-medium" 
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
@@ -273,7 +273,7 @@ export default function Dashboard() {
                 onClick={() => setActiveTab("stats")}
                 className={`w-full flex items-center px-3 py-2 rounded-md text-left transition-colors ${
                   activeTab === "stats" 
-                    ? "bg-amber-100 text-amber-700 font-medium" 
+                    ? "bg-green-100 text-green-700 font-medium" 
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
@@ -285,7 +285,7 @@ export default function Dashboard() {
                 onClick={() => setActiveTab("activity")}
                 className={`w-full flex items-center px-3 py-2 rounded-md text-left transition-colors ${
                   activeTab === "activity" 
-                    ? "bg-amber-100 text-amber-700 font-medium" 
+                    ? "bg-green-100 text-green-700 font-medium" 
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
@@ -297,7 +297,7 @@ export default function Dashboard() {
                 onClick={() => setActiveTab("settings")}
                 className={`w-full flex items-center px-3 py-2 rounded-md text-left transition-colors ${
                   activeTab === "settings" 
-                    ? "bg-amber-100 text-amber-700 font-medium" 
+                    ? "bg-green-100 text-green-700 font-medium" 
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
               >
@@ -307,10 +307,10 @@ export default function Dashboard() {
             </nav>
             
             <div className="mt-6 pt-4 border-t border-gray-200">
-              <div className="bg-amber-50 p-3 rounded-lg border border-amber-200">
+              <div className="bg-green-50 p-3 rounded-lg border border-green-200">
                 <div className="flex">
-                  <ArrowPathIcon className="h-5 w-5 text-amber-600 mt-0.5 mr-2 flex-shrink-0" />
-                  <p className="text-xs text-amber-800">
+                  <ArrowPathIcon className="h-5 w-5 text-green-600 mt-0.5 mr-2 flex-shrink-0" />
+                  <p className="text-xs text-green-800">
                     You've saved 20+ items from landfill this year! ♻️
                   </p>
                 </div>

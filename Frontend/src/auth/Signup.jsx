@@ -1,5 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import ErrorMessage from "../components/common/ErrorMessage";
+import Loading from "../components/common/Loading";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -13,6 +16,9 @@ export default function Signup() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [signupError, setSignupError] = useState(null);
+  const { register, loading } = useAuth();
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -22,17 +28,44 @@ export default function Signup() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Signup attempted with:", formData);
+    setSignupError(null);
+    
+    // Validate passwords match
+    if (formData.password !== formData.confirmPassword) {
+      setSignupError('Passwords do not match');
+      return;
+    }
+    
+    // Validate terms acceptance
+    if (!formData.acceptTerms) {
+      setSignupError('You must accept the terms and conditions');
+      return;
+    }
+    
+    try {
+      await register({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        role: formData.userType
+      });
+      
+      // Redirect to home page after successful registration
+      navigate('/');
+    } catch (error) {
+      setSignupError(error.message || 'Failed to create account. Please try again.');
+      console.error('Signup error:', error);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <div className="rounded-full bg-amber-100 p-4">
-            <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="rounded-full bg-green-100 p-4">
+            <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
             </svg>
           </div>
@@ -46,7 +79,9 @@ export default function Signup() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:rounded-2xl sm:px-10 border border-amber-100">
+        <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:rounded-2xl sm:px-10 border border-green-100">
+          {signupError && <ErrorMessage error={signupError} />}
+          
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="userType" className="block text-sm font-medium text-gray-700 mb-2">
@@ -60,7 +95,7 @@ export default function Signup() {
                     value="buyer"
                     checked={formData.userType === "buyer"}
                     onChange={handleInputChange}
-                    className="focus:ring-amber-500 h-4 w-4 text-amber-600 border-gray-300"
+                    className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300"
                   />
                   <span className="ml-2 text-sm text-gray-700">Shop for items</span>
                 </label>
@@ -71,7 +106,7 @@ export default function Signup() {
                     value="seller"
                     checked={formData.userType === "seller"}
                     onChange={handleInputChange}
-                    className="focus:ring-amber-500 h-4 w-4 text-amber-600 border-gray-300"
+                    className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300"
                   />
                   <span className="ml-2 text-sm text-gray-700">Sell items</span>
                 </label>
@@ -96,7 +131,7 @@ export default function Signup() {
                   required
                   value={formData.username}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
+                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
                   placeholder="Enter your username"
                 />
               </div>
@@ -121,7 +156,7 @@ export default function Signup() {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
+                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
                   placeholder="you@example.com"
                 />
               </div>
@@ -145,7 +180,7 @@ export default function Signup() {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
+                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
                   placeholder="••••••••"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -189,7 +224,7 @@ export default function Signup() {
                   required
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
+                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
                   placeholder="••••••••"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -224,12 +259,12 @@ export default function Signup() {
                     required
                     checked={formData.acceptTerms}
                     onChange={handleInputChange}
-                    className="focus:ring-amber-500 h-4 w-4 text-amber-600 border-gray-300 rounded"
+                    className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
                   />
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="acceptTerms" className="font-medium text-gray-700">
-                    I agree to the <Link to="/terms" className="text-amber-600 hover:text-amber-500">Terms and Conditions</Link>
+                    I agree to the <Link to="/terms" className="text-green-600 hover:text-green-500">Terms and Conditions</Link>
                   </label>
                 </div>
               </div>
@@ -242,7 +277,7 @@ export default function Signup() {
                     type="checkbox"
                     checked={formData.newsletter}
                     onChange={handleInputChange}
-                    className="focus:ring-amber-500 h-4 w-4 text-amber-600 border-gray-300 rounded"
+                    className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
                   />
                 </div>
                 <div className="ml-3 text-sm">
@@ -256,7 +291,7 @@ export default function Signup() {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition duration-300 ease-in-out transform hover:-translate-y-0.5"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-300 ease-in-out transform hover:-translate-y-0.5"
               >
                 Create Account
               </button>
@@ -296,7 +331,7 @@ export default function Signup() {
 
           <p className="mt-8 text-center text-sm text-gray-600">
             Already have an account?{" "}
-            <Link to="/login" className="font-medium text-amber-600 hover:text-amber-500 transition duration-150 ease-in-out">
+            <Link to="/login" className="font-medium text-green-600 hover:text-green-500 transition duration-150 ease-in-out">
               Sign in
             </Link>
           </p>

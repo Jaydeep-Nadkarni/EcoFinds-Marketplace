@@ -137,7 +137,7 @@ export default function MyListings() {
   const getConditionBadge = (condition) => {
     const conditionConfig = {
       excellent: { color: "bg-green-100 text-green-800", text: "Excellent" },
-      good: { color: "bg-amber-100 text-amber-800", text: "Good" },
+      good: { color: "bg-green-100 text-green-800", text: "Good" },
       fair: { color: "bg-yellow-100 text-yellow-800", text: "Fair" },
       poor: { color: "bg-red-100 text-red-800", text: "Poor" }
     };
@@ -159,14 +159,14 @@ export default function MyListings() {
     <div className="max-w-6xl mx-auto p-4 md:p-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div className="flex items-center mb-4 md:mb-0">
-          <ArchiveBoxXMarkIcon className="w-8 h-8 text-amber-600 mr-2" />
+          <ArchiveBoxXMarkIcon className="w-8 h-8 text-green-600 mr-2" />
           <h1 className="text-2xl font-bold text-gray-800">My Listings</h1>
           <span className="ml-3 bg-gray-100 text-gray-800 text-sm font-medium px-2.5 py-0.5 rounded-full">
             {totalListings} items
           </span>
         </div>
         
-        <button className="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-4 rounded-lg flex items-center transition-colors">
+        <button className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg flex items-center transition-colors">
           <PlusIcon className="w-5 h-5 mr-1" />
           List New Item
         </button>
@@ -176,8 +176,8 @@ export default function MyListings() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center">
-            <div className="rounded-full p-2 bg-amber-100 mr-3">
-              <ArchiveBoxXMarkIcon className="w-5 h-5 text-amber-600" />
+            <div className="rounded-full p-2 bg-green-100 mr-3">
+              <ArchiveBoxXMarkIcon className="w-5 h-5 text-green-600" />
             </div>
             <div>
               <p className="text-sm text-gray-600">Total Listed</p>
@@ -234,7 +234,7 @@ export default function MyListings() {
             <select 
               value={filter} 
               onChange={(e) => setFilter(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
             >
               <option value="all">All Listings</option>
               <option value="active">Active</option>
@@ -245,7 +245,7 @@ export default function MyListings() {
             <select 
               value={sortBy} 
               onChange={(e) => setSortBy(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
@@ -280,7 +280,7 @@ export default function MyListings() {
                 ? "You haven't listed any items yet." 
                 : `You don't have any ${filter} listings.`}
             </p>
-            <button className="mt-4 bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-4 rounded-lg inline-flex items-center transition-colors">
+            <button className="mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg inline-flex items-center transition-colors">
               <PlusIcon className="w-4 h-4 mr-1" />
               List Your First Item
             </button>
@@ -328,7 +328,7 @@ export default function MyListings() {
                           type="checkbox"
                           checked={selectedItems.includes(listing.id)}
                           onChange={() => toggleSelectItem(listing.id)}
-                          className="rounded border-gray-300 text-amber-600 focus:ring-amber-500"
+                          className="rounded border-gray-300 text-green-600 focus:ring-green-500"
                         />
                       </label>
                     </div>
@@ -348,7 +348,7 @@ export default function MyListings() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      <button className="p-1 text-gray-400 hover:text-amber-600 transition-colors" title="View listing">
+                      <button className="p-1 text-gray-400 hover:text-green-600 transition-colors" title="View listing">
                         <ArrowsPointingOutIcon className="w-4 h-4" />
                       </button>
                       <button className="p-1 text-gray-400 hover:text-blue-600 transition-colors" title="Edit">

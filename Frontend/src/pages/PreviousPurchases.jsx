@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { 
   TruckIcon, 
   CheckBadgeIcon, 
@@ -9,12 +10,66 @@ import {
   ChatBubbleLeftRightIcon,
   EyeIcon
 } from "@heroicons/react/24/outline";
+import orderService from "../services/orderService";
+import Loading from "../components/common/Loading";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function PreviousPurchases() {
   const [filter, setFilter] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const purchases = [
+  // Fetch orders from API
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await orderService.getUserOrders();
+      setOrders(data);
+    } catch (err) {
+      setError(err.message || 'Failed to fetch orders');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Normalize order data to handle both API and legacy formats
+  const normalizeOrders = (ordersData) => {
+    return ordersData.map(order => ({
+      id: order.order_id || order.id,
+      date: order.order_date || order.date,
+      items: (order.items || []).map(item => ({
+        id: item.product_id || item.id,
+        name: item.product_name || item.title || item.name,
+        price: item.price,
+        originalPrice: item.original_price || item.originalPrice,
+        condition: item.condition_type || item.condition,
+        seller: item.seller_name || item.seller,
+        image: item.image_url || item.image,
+        status: item.status,
+        deliveredDate: item.delivered_date || item.deliveredDate,
+        rating: item.rating,
+        review: item.review,
+        category: item.category
+      })),
+      total: order.total_amount || order.total,
+      status: order.status,
+      deliveryMethod: order.delivery_method || order.deliveryMethod,
+      trackingNumber: order.tracking_number || order.trackingNumber,
+      seller: order.seller_name || order.seller
+    }));
+  };
+
+  const normalizedOrders = normalizeOrders(orders);
+  
+  // Static data for fallback/demo purposes
+  const staticPurchases = [
     {
       id: "ORD-12345",
       date: "2023-10-15",
@@ -105,6 +160,10 @@ export default function PreviousPurchases() {
     }
   ];
 
+  // Determine which data to use - API data or fallback to static data if needed
+  const purchases = normalizedOrders.length > 0 ? normalizedOrders : staticPurchases;
+
+  // Filter purchases based on selected filter
   const filteredPurchases = filter === "all" 
     ? purchases 
     : purchases.filter(purchase => purchase.status === filter);
@@ -113,7 +172,7 @@ export default function PreviousPurchases() {
     const statusConfig = {
       delivered: { color: "bg-green-100 text-green-800", icon: CheckBadgeIcon, text: "Delivered" },
       shipped: { color: "bg-blue-100 text-blue-800", icon: TruckIcon, text: "Shipped" },
-      processing: { color: "bg-amber-100 text-amber-800", icon: ArrowPathIcon, text: "Processing" },
+      processing: { color: "bg-green-100 text-green-800", icon: ArrowPathIcon, text: "Processing" },
       cancelled: { color: "bg-red-100 text-red-800", icon: CheckBadgeIcon, text: "Cancelled" }
     };
     
@@ -131,7 +190,7 @@ export default function PreviousPurchases() {
   const getConditionBadge = (condition) => {
     const conditionConfig = {
       excellent: { color: "bg-green-100 text-green-800", text: "Excellent" },
-      good: { color: "bg-amber-100 text-amber-800", text: "Good" },
+      good: { color: "bg-green-100 text-green-800", text: "Good" },
       fair: { color: "bg-yellow-100 text-yellow-800", text: "Fair" },
       poor: { color: "bg-red-100 text-red-800", text: "Poor" }
     };
@@ -151,7 +210,7 @@ export default function PreviousPurchases() {
           <StarIcon
             key={star}
             className={`w-4 h-4 ${
-              star <= rating ? "text-amber-500 fill-amber-500" : "text-gray-300"
+              star <= rating ? "text-green-500 fill-green-500" : "text-gray-300"
             }`}
           />
         ))}
@@ -170,7 +229,7 @@ export default function PreviousPurchases() {
   return (
     <div className="max-w-4xl mx-auto p-4 md:p-6">
       <div className="flex items-center mb-6">
-        <ShoppingBagIcon className="w-8 h-8 text-amber-600 mr-2" />
+        <ShoppingBagIcon className="w-8 h-8 text-green-600 mr-2" />
         <h1 className="text-2xl font-bold text-gray-800">Purchase History</h1>
       </div>
 
@@ -178,8 +237,8 @@ export default function PreviousPurchases() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center">
-            <div className="rounded-full p-2 bg-amber-100 mr-3">
-              <ShoppingBagIcon className="w-5 h-5 text-amber-600" />
+            <div className="rounded-full p-2 bg-green-100 mr-3">
+              <ShoppingBagIcon className="w-5 h-5 text-green-600" />
             </div>
             <div>
               <p className="text-sm text-gray-600">Total Orders</p>
@@ -214,12 +273,12 @@ export default function PreviousPurchases() {
       </div>
 
       {/* Sustainability Impact */}
-      <div className="bg-amber-50 p-4 rounded-lg border border-amber-200 mb-6">
+      <div className="bg-green-50 p-4 rounded-lg border border-green-200 mb-6">
         <div className="flex items-start">
-          <ArrowPathIcon className="w-6 h-6 text-amber-600 mt-0.5 mr-3 flex-shrink-0" />
+          <ArrowPathIcon className="w-6 h-6 text-green-600 mt-0.5 mr-3 flex-shrink-0" />
           <div>
-            <h3 className="font-medium text-amber-800 mb-1">Your Sustainability Impact ♻️</h3>
-            <p className="text-sm text-amber-700">
+            <h3 className="font-medium text-green-800 mb-1">Your Sustainability Impact ♻️</h3>
+            <p className="text-sm text-green-700">
               By purchasing {totalItems} pre-loved items, you've saved them from landfill and reduced your carbon footprint. 
               Thank you for choosing sustainable shopping!
             </p>
@@ -238,7 +297,7 @@ export default function PreviousPurchases() {
                 onClick={() => setFilter(status)}
                 className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                   filter === status
-                    ? "bg-amber-600 text-white"
+                    ? "bg-green-600 text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -251,7 +310,21 @@ export default function PreviousPurchases() {
 
       {/* Orders List */}
       <div className="space-y-4">
-        {filteredPurchases.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loading message="Loading your orders..." />
+          </div>
+        ) : error ? (
+          <div className="flex flex-col justify-center items-center h-64">
+            <ErrorMessage message={error} />
+            <button 
+              onClick={() => fetchOrders()} 
+              className="mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : filteredPurchases.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
             <ShoppingBagIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No purchases found</h3>
@@ -260,9 +333,9 @@ export default function PreviousPurchases() {
                 ? "You haven't made any purchases yet." 
                 : `You don't have any ${filter} purchases.`}
             </p>
-            <button className="mt-4 bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+            <Link to="/products" className="mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors inline-block">
               Start Shopping
-            </button>
+            </Link>
           </div>
         ) : (
           filteredPurchases.map((purchase) => (
@@ -330,7 +403,7 @@ export default function PreviousPurchases() {
                               <span className="ml-1 text-xs text-gray-500">({item.rating})</span>
                             </div>
                           ) : (
-                            <button className="text-xs text-amber-600 hover:text-amber-700 font-medium">
+                            <button className="text-xs text-green-600 hover:text-green-700 font-medium">
                               <ChatBubbleLeftRightIcon className="w-4 h-4 inline mr-1" />
                               Write Review
                             </button>

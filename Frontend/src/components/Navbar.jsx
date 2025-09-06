@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { 
   HomeIcon,
   ShoppingCartIcon,
+  ShoppingBagIcon,
   PlusCircleIcon,
   ClipboardDocumentListIcon,
   UserIcon,
@@ -15,7 +17,6 @@ import {
 
 function Navbar({ onSearch, onFilter }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
@@ -25,6 +26,8 @@ function Navbar({ onSearch, onFilter }) {
     sortBy: "newest"
   });
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
 
   // Helper to check if link is active
   const isActive = (path) => location.pathname === path;
@@ -32,20 +35,29 @@ function Navbar({ onSearch, onFilter }) {
   // Base navigation items (always shown)
   const baseNavItems = [
     { path: '/', label: 'Home', icon: HomeIcon },
+    { path: '/products', label: 'Products', icon: ShoppingCartIcon },
   ];
 
-  // Auth-required navigation items
+  // Auth-required navigation items - conditionally show based on user role
   const authNavItems = [
-    { path: '/add-product', label: 'Sell', icon: PlusCircleIcon },
-    { path: '/cart', label: 'Cart', icon: ShoppingCartIcon },
-    { path: '/my-listings', label: 'Listings', icon: ClipboardDocumentListIcon },
-    { path: '/profile', label: 'Profile', icon: UserIcon },
+    { path: '/cart', label: 'Cart', icon: ShoppingBagIcon },
+    ...(user?.role === 'seller' || user?.role === 'admin' ? [
+      { path: '/add-product', label: 'Sell', icon: PlusCircleIcon },
+      { path: '/my-listings', label: 'Listings', icon: ClipboardDocumentListIcon },
+    ] : []),
+    { path: '/dashboard', label: 'Dashboard', icon: UserIcon },
   ];
 
   // Combine nav items based on auth state
-  const navItems = isAuthenticated 
+  const navItems = isAuthenticated() 
     ? [...baseNavItems, ...authNavItems]
     : baseNavItems;
+    
+  // Handle logout
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const handleSearch = (query) => {
     setSearchQuery(query);
@@ -145,7 +157,7 @@ function Navbar({ onSearch, onFilter }) {
           </button>
 
           {/* Auth Button - Desktop */}
-          {!isAuthenticated && (
+          {!isAuthenticated() ? (
             <div className="hidden md:block">
               <Link 
                 to="/login"
@@ -154,10 +166,19 @@ function Navbar({ onSearch, onFilter }) {
                 Login
               </Link>
             </div>
+          ) : (
+            <div className="hidden md:block">
+              <button 
+                onClick={handleLogout}
+                className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-full text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+              >
+                Logout
+              </button>
+            </div>
           )}
 
           {/* Cart Icon - Mobile */}
-          {isAuthenticated && (
+          {isAuthenticated() && (
             <Link 
               to="/cart" 
               className="md:hidden p-2 rounded-md text-gray-600 hover:text-green-600 hover:bg-green-50 transition-colors"

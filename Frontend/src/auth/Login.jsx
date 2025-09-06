@@ -1,5 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import ErrorMessage from "../components/common/ErrorMessage";
+import Loading from "../components/common/Loading";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -8,6 +11,11 @@ export default function Login() {
     rememberMe: false
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+  const { login, loading } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -17,17 +25,30 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login attempted with:", formData);
+    setLoginError(null);
+    
+    try {
+      await login({
+        email: formData.email,
+        password: formData.password
+      });
+      
+      // Redirect to the page they were trying to access or home
+      navigate(from, { replace: true });
+    } catch (error) {
+      setLoginError(error.message || 'Failed to login. Please check your credentials.');
+      console.error('Login error:', error);
+    }
   };
 
   return (
     <div className="min-h-screen  flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <div className="rounded-full bg-amber-100 p-4">
-            <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="rounded-full bg-green-100 p-4">
+            <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
             </svg>
           </div>
@@ -41,7 +62,9 @@ export default function Login() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:rounded-2xl sm:px-10 border border-amber-100">
+        <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:rounded-2xl sm:px-10 border border-green-100">
+          {loginError && <ErrorMessage error={loginError} />}
+          
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -62,7 +85,7 @@ export default function Login() {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
+                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
                   placeholder="you@example.com"
                 />
               </div>
@@ -86,7 +109,7 @@ export default function Login() {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
+                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
                   placeholder="••••••••"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -120,7 +143,7 @@ export default function Login() {
                     type="checkbox"
                     checked={formData.rememberMe}
                     onChange={handleInputChange}
-                    className="focus:ring-amber-500 h-4 w-4 text-amber-600 border-gray-300 rounded"
+                    className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300 rounded"
                   />
                 </div>
                 <div className="ml-3 text-sm">
@@ -131,7 +154,7 @@ export default function Login() {
               </div>
 
               <div className="text-sm">
-                <Link to="/forgot-password" className="font-medium text-amber-600 hover:text-amber-500 transition duration-150 ease-in-out">
+                <Link to="/forgot-password" className="font-medium text-green-600 hover:text-green-500 transition duration-150 ease-in-out">
                   Forgot password?
                 </Link>
               </div>
@@ -140,9 +163,10 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition duration-300 ease-in-out transform hover:-translate-y-0.5"
+                disabled={loading}
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-300 ease-in-out transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Sign in
+                {loading ? <Loading size="small" message="" /> : 'Sign in'}
               </button>
             </div>
           </form>
@@ -180,7 +204,7 @@ export default function Login() {
 
           <p className="mt-8 text-center text-sm text-gray-600">
             Don't have an account?{" "}
-            <Link to="/signup" className="font-medium text-amber-600 hover:text-amber-500 transition duration-150 ease-in-out">
+            <Link to="/signup" className="font-medium text-green-600 hover:text-green-500 transition duration-150 ease-in-out">
               Sign up
             </Link>
           </p>

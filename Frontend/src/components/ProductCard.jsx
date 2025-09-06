@@ -11,30 +11,52 @@ import {
 } from "@heroicons/react/24/solid";
 
 export default function ProductCard({ 
-  id, 
+  product_id, 
   title, 
   price, 
-  originalPrice, 
-  condition, 
+  original_price, 
+  condition_type, 
+  category_id,
+  seller_name,
+  seller_verified,
+  location,
+  image_url,
+  likes = 23,
+  views = 156,
+  // Support both API and legacy data formats
+  id,
+  originalPrice,
+  condition,
   category,
   seller,
   verifiedSeller,
-  location,
-  imageUrl,
-  likes = 23,
-  views = 156
+  imageUrl: legacyImageUrl
 }) {
   const [isLiked, setIsLiked] = useState(false);
   const [imageError, setImageError] = useState(false);
   
+  // Normalize data to handle both API and legacy formats
+  const productId = product_id || id;
+  const productTitle = title;
+  const productPrice = price;
+  const productOriginalPrice = original_price || originalPrice;
+  const productCondition = condition_type || condition;
+  const productCategory = category_id || category;
+  const productSeller = seller_name || seller;
+  const productVerifiedSeller = seller_verified || verifiedSeller;
+  const productLocation = location;
+  const productImageUrl = image_url || legacyImageUrl || imageUrl;
+  
   const conditionColors = {
     'Excellent': 'bg-green-100 text-green-800',
+    'New': 'bg-green-100 text-green-800',
+    'Like New': 'bg-green-100 text-green-800',
     'Good': 'bg-blue-100 text-blue-800',
-    'Fair': 'bg-amber-100 text-amber-800',
+    'Fair': 'bg-yellow-100 text-yellow-800',
     'Poor': 'bg-red-100 text-red-800'
   };
 
-  const discount = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+  const discount = productOriginalPrice ? Math.round(((productOriginalPrice - productPrice) / productOriginalPrice) * 100) : 0;
 
   const handleImageError = () => {
     setImageError(true);
@@ -48,13 +70,13 @@ export default function ProductCard({
 
   return (
     <div className="group relative bg-white rounded-xl shadow-sm hover:shadow-xl border border-gray-100 transition-all duration-300 overflow-hidden">
-      <Link to={`/product/${id}`} className="block">
+      <Link to={`/product/${productId}`} className="block">
         {/* Image container */}
         <div className="relative h-48 overflow-hidden bg-gray-100 flex justify-center items-center">
-          {imageUrl && !imageError ? (
+          {productImageUrl && !imageError ? (
             <img 
-              src={imageUrl} 
-              alt={title}
+              src={productImageUrl} 
+              alt={productTitle}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               onError={handleImageError}
             />
@@ -66,15 +88,15 @@ export default function ProductCard({
           )}
           
           {/* Condition badge */}
-          {condition && (
-            <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-medium ${conditionColors[condition] || 'bg-gray-100 text-gray-800'}`}>
-              {condition} condition
+          {productCondition && (
+            <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-medium ${conditionColors[productCondition] || 'bg-gray-100 text-gray-800'}`}>
+              {productCondition} condition
             </div>
           )}
           
           {/* Discount badge */}
           {discount > 0 && (
-            <div className="absolute top-3 right-3 px-2 py-1 bg-amber-600 text-white rounded-full text-xs font-bold">
+            <div className="absolute top-3 right-3 px-2 py-1 bg-green-600 text-white rounded-full text-xs font-bold">
               {discount}% OFF
             </div>
           )}
@@ -96,8 +118,8 @@ export default function ProductCard({
         {/* Product details */}
         <div className="p-4">
           <div className="flex justify-between items-start mb-1">
-            <h3 className="font-medium text-gray-900 line-clamp-2 text-sm leading-tight group-hover:text-amber-700 transition-colors">
-              {title}
+            <h3 className="font-medium text-gray-900 line-clamp-2 text-sm leading-tight group-hover:text-green-700 transition-colors">
+              {productTitle}
             </h3>
           </div>
           
@@ -117,8 +139,8 @@ export default function ProductCard({
           {/* Seller info */}
           <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
             <div className="flex items-center">
-              <div className="w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center mr-2">
-                <span className="text-xs font-medium text-amber-800">{seller?.charAt(0) || 'U'}</span>
+              <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center mr-2">
+                <span className="text-xs font-medium text-green-800">{seller?.charAt(0) || 'U'}</span>
               </div>
               <div>
                 <p className="text-xs text-gray-700">
@@ -150,7 +172,7 @@ export default function ProductCard({
         {/* Sustainability badge */}
         <div className="absolute top-40 left-3">
           <div className="bg-white rounded-full p-1 shadow-sm">
-            <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center">
+            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
               <ArrowPathIcon className="w-3 h-3 text-white" />
             </div>
           </div>
