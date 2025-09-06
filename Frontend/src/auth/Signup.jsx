@@ -7,6 +7,7 @@ export default function Signup() {
     email: "",
     password: "",
     confirmPassword: "",
+    userType: "buyer", // "buyer" or "seller"
     acceptTerms: false,
     newsletter: true
   });
@@ -23,31 +24,60 @@ export default function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Signup logic would go here
     console.log("Signup attempted with:", formData);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
-          <div className="rounded-full bg-indigo-100 p-4">
-            <svg className="w-10 h-10 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="rounded-full bg-amber-100 p-4">
+            <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
             </svg>
           </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Create Your Account
+          Join ReCircle
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Join thousands of shoppers on StyleMart
+          Create an account to start buying and selling pre-loved items
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:rounded-2xl sm:px-10 border border-gray-100">
+        <div className="bg-white py-8 px-4 shadow-xl rounded-lg sm:rounded-2xl sm:px-10 border border-amber-100">
           <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="userType" className="block text-sm font-medium text-gray-700 mb-2">
+                I want to:
+              </label>
+              <div className="flex space-x-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="userType"
+                    value="buyer"
+                    checked={formData.userType === "buyer"}
+                    onChange={handleInputChange}
+                    className="focus:ring-amber-500 h-4 w-4 text-amber-600 border-gray-300"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">Shop for items</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="userType"
+                    value="seller"
+                    checked={formData.userType === "seller"}
+                    onChange={handleInputChange}
+                    className="focus:ring-amber-500 h-4 w-4 text-amber-600 border-gray-300"
+                  />
+                  <span className="ml-2 text-sm text-gray-700">Sell items</span>
+                </label>
+              </div>
+            </div>
+
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                 Username
@@ -66,7 +96,7 @@ export default function Signup() {
                   required
                   value={formData.username}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
+                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
                   placeholder="Enter your username"
                 />
               </div>
@@ -91,7 +121,7 @@ export default function Signup() {
                   required
                   value={formData.email}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
+                  className="py-3 pl-10 pr-3 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
                   placeholder="you@example.com"
                 />
               </div>
@@ -115,7 +145,7 @@ export default function Signup() {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
+                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
                   placeholder="••••••••"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -159,7 +189,7 @@ export default function Signup() {
                   required
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200"
+                  className="py-3 pl-10 pr-10 block w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200"
                   placeholder="••••••••"
                 />
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -194,12 +224,12 @@ export default function Signup() {
                     required
                     checked={formData.acceptTerms}
                     onChange={handleInputChange}
-                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                    className="focus:ring-amber-500 h-4 w-4 text-amber-600 border-gray-300 rounded"
                   />
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="acceptTerms" className="font-medium text-gray-700">
-                    I agree to the <Link to="/terms" className="text-indigo-600 hover:text-indigo-500">Terms and Conditions</Link>
+                    I agree to the <Link to="/terms" className="text-amber-600 hover:text-amber-500">Terms and Conditions</Link>
                   </label>
                 </div>
               </div>
@@ -212,12 +242,12 @@ export default function Signup() {
                     type="checkbox"
                     checked={formData.newsletter}
                     onChange={handleInputChange}
-                    className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                    className="focus:ring-amber-500 h-4 w-4 text-amber-600 border-gray-300 rounded"
                   />
                 </div>
                 <div className="ml-3 text-sm">
                   <label htmlFor="newsletter" className="font-medium text-gray-700">
-                    Send me product updates and shopping recommendations
+                    Send me updates on new pre-loved items and deals
                   </label>
                 </div>
               </div>
@@ -226,7 +256,7 @@ export default function Signup() {
             <div>
               <button
                 type="submit"
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-300 ease-in-out transform hover:-translate-y-0.5"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition duration-300 ease-in-out transform hover:-translate-y-0.5"
               >
                 Create Account
               </button>
@@ -257,7 +287,7 @@ export default function Signup() {
               <div>
                 <button className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition duration-150 ease-in-out">
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+                    <path d="M6.29 18.251c7.547 极速电竞官网 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 极速电竞官网 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.极速电竞官网 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 极速电竞官网 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
                   </svg>
                 </button>
               </div>
@@ -266,7 +296,7 @@ export default function Signup() {
 
           <p className="mt-8 text-center text-sm text-gray-600">
             Already have an account?{" "}
-            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out">
+            <Link to="/login" className="font-medium text-amber-600 hover:text-amber-500 transition duration-150 ease-in-out">
               Sign in
             </Link>
           </p>

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import CategoryFilter from '../components/CategoryFilter';
+import ProductCard from '../components/ProductCard';
 
 export default function ShoppingPlatform() {
   const [searchQuery, setSearchQuery] = useState('');
